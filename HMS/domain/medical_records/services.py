@@ -1,0 +1,29 @@
+"""
+This following file contains all queries related to particular model.
+"""
+
+from typing import Type
+
+from django.db.models.manager import BaseManager
+
+from HMS.domain.medical_records.models import MedicalRecord
+from HMS.domain.staff.models import Staff, StaffFactory
+
+
+class MedicalRecordServices:
+    """
+    This creates model service that provide abstract layer over
+    model and user have to access service layer instead of accessing model.
+    """
+
+    def get_medical_record_factory(
+            self,
+    ) -> Type[MedicalRecord]:
+        return MedicalRecord
+
+    def get_medical_record_repo(self) -> BaseManager[MedicalRecord]:
+        return MedicalRecord.objects
+
+    @staticmethod
+    def get_medical_record_by_id(id: str) -> Type[MedicalRecord]:
+        return MedicalRecord.objects.get(id=id)
