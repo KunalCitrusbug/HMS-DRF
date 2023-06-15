@@ -1,5 +1,5 @@
 """
-This following file contains all queries related to particular model.
+This following file contains all queries related to a particular model.
 """
 
 from typing import Type
@@ -12,7 +12,7 @@ from HMS.domain.doctor.models import Doctor, DoctorFactory
 class DoctorServices:
     """
     This creates model service that provide abstract layer over
-    model and user have to access service layer instead of accessing model.
+    a model, and user has to access service layer instead of an accessing model.
     """
 
     def get_doctor_factory(

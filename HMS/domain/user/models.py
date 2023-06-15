@@ -57,6 +57,7 @@ class User(AbstractUser):
         ("Patient", "Patient"),
         ("Staff", "Staff"),
         ("Admin", "Admin"),
+        ("Doctor", "Doctor"),
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -92,7 +93,7 @@ class User(AbstractUser):
 class UserFactory:
     @staticmethod
     def build_entity(
-            id: UserID, email: str, is_admin: bool, is_active: bool, password: str
+            id: UserID, email: str, is_admin: bool, is_active: bool, password: str, user_type: str
     ) -> User:
         return User(
             id=id,
@@ -100,11 +101,12 @@ class UserFactory:
             is_admin=is_admin,
             is_active=is_active,
             password=password,
+            user_type=user_type
         )
 
     @classmethod
     def build_entity_with_id(
-            cls, email: str, is_admin: bool, is_active: bool, password: str
+            cls, email: str, is_admin: bool, is_active: bool, password: str, user_type: str
     ) -> User:
         entity_id = UserID(uuid.uuid4())
         return cls.build_entity(
@@ -113,4 +115,5 @@ class UserFactory:
             is_admin=is_admin,
             is_active=is_active,
             password=password,
+            user_type=user_type
         )
