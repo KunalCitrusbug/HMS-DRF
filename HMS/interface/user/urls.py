@@ -6,6 +6,8 @@ and generate the HTTP response.
 
 from django.urls import path
 from rest_framework import routers
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
 
 from HMS.interface.user.views import RegisterView
 
@@ -16,4 +18,6 @@ from HMS.interface.user.views import RegisterView
 
 urlpatterns = [
     path('signup/', RegisterView.as_view(), name="sign_up"),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

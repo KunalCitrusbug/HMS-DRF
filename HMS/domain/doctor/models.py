@@ -1,5 +1,5 @@
 """
-This file define the structure of stored data,
+This file defines the structure of stored data,
 including the field types and possibly related information
 """
 
@@ -30,10 +30,10 @@ class Doctor(Activity):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=150)
-    specialization = models.CharField(max_length=150)
-    doj = models.DateField()
-    contact_no = models.CharField(max_length=12)
+    name = models.CharField(max_length=150, null=True, blank=True)
+    specialization = models.CharField(max_length=150, null=True, blank=True)
+    doj = models.DateField(null=True, blank=True)
+    contact_no = models.CharField(max_length=12, null=True, blank=True)
 
     class Meta:
         verbose_name = "doctor"
@@ -41,12 +41,12 @@ class Doctor(Activity):
         db_table = "doctor"
 
     def __str__(self):
-        return str(self.name + self.specialization)
+        return str(self.name + "-" + self.specialization)
 
 
 class DoctorFactory:
     """
-    This following class is a Factory method of above-mentioned model.
+    This following class is a Factory method of an above-mentioned model.
     """
 
     @staticmethod
@@ -59,5 +59,5 @@ class DoctorFactory:
     def build_entity_with_id(cls, user: User, name: str, specialization: str, doj: datetime,
                              contact_no: str) -> Doctor:
         entity_id = DoctorID(uuid.uuid4())
-        return cls.build_entity(id=entity_id, name=name, user=user, specialization=specialization,
+        return cls.build_entity(id=entity_id.value, name=name, user=user, specialization=specialization,
                                 doj=doj, contact_no=contact_no)

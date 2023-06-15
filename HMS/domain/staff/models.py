@@ -36,11 +36,11 @@ class Staff(Activity):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=150)
-    staff_type = models.CharField(max_length=150, choices=STAFF_TYPE)
-    specialization = models.CharField(max_length=150)
-    doj = models.DateField()
-    contact_no = models.CharField(max_length=12)
+    name = models.CharField(max_length=150, null=True, blank=True)
+    staff_type = models.CharField(max_length=150, choices=STAFF_TYPE, null=True, blank=True)
+    specialization = models.CharField(max_length=150, null=True, blank=True)
+    doj = models.DateField(null=True, blank=True)
+    contact_no = models.CharField(max_length=12, null=True, blank=True)
 
     class Meta:
         verbose_name = "Staff"
@@ -66,6 +66,6 @@ class StaffFactory:
     def build_entity_with_id(cls, user: User, name: str, staff_type: str, specialization: str, doj: datetime,
                              contact_no: str) -> Staff:
         entity_id = StaffID(uuid.uuid4())
-        return cls.build_entity(id=entity_id, name=name, user=user, staff_type=staff_type,
+        return cls.build_entity(id=entity_id.value, name=name, user=user, staff_type=staff_type,
                                 specialization=specialization, doj=doj,
                                 contact_no=contact_no)
