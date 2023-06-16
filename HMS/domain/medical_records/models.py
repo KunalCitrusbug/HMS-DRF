@@ -39,12 +39,12 @@ class MedicalRecord(Activity):
         db_table = "medical_record"
 
     def __str__(self):
-        return self.patient.name
+        return f"Medical Record: {self.id} - Patient: {self.patient} - Doctor: {self.doctor}"
 
 
 class MedicalRecordFactory:
     """
-    This following class is a Factory method of above-mentioned model.
+    This following class is a Factory method of an above-mentioned model.
     """
 
     @staticmethod

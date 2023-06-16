@@ -12,7 +12,7 @@ from HMS.domain.staff.models import Staff, StaffFactory
 class StaffServices:
     """
     This creates model service that provide abstract layer over
-    model and user have to access service layer instead of accessing model.
+    a model, and user has to access service layer instead of an accessing model.
     """
 
     def get_staff_factory(

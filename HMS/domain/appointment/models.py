@@ -1,5 +1,5 @@
 """
-This file define the structure of stored data,
+This file defines the structure of stored data,
 including the field types and possibly related information
 """
 
@@ -40,19 +40,22 @@ class Appointment(Activity):
         verbose_name_plural = "Appointments"
         db_table = "appointment"
 
+    def __str__(self):
+        return f"Appointment ID: {self.id} - Patient: {self.patient} - Doctor: {self.doctor} - Date: {self.date} - Time: {self.time}"
+
 
 class AppointmentFactory:
     """
-    This following class is a Factory method of above-mentioned model.
+    This following class is a Factory method of an above-mentioned model.
     """
 
     @staticmethod
     def build_entity(id: id, patient: Patient, doctor: Doctor,
-                     date: datetime, time: datetime.time()) -> Appointment:
+                     date: datetime, time: datetime) -> Appointment:
         return Appointment(id=id, patient=patient, doctor=doctor, date=date, time=time)
 
     @classmethod
     def build_entity_with_id(cls, patient: Patient, doctor: Doctor,
-                             date: datetime, time: datetime.time()) -> Appointment:
+                             date: datetime, time: datetime) -> Appointment:
         entity_id = AppointmentID(uuid.uuid4())
         return cls.build_entity(id=entity_id, patient=patient, doctor=doctor, date=date, time=time)

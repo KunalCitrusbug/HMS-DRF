@@ -33,6 +33,7 @@ class Patient(Activity):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     age = models.PositiveIntegerField()
     dob = models.DateField(null=True, blank=True)
+    address = models.TextField()
 
     class Meta:
         verbose_name = "Patient"
@@ -49,10 +50,10 @@ class PatientFactory:
     """
 
     @staticmethod
-    def build_entity(id: PatientID, user: User, age: int, dob: datetime) -> Patient:
-        return Patient(id=id, user=user, age=age, dob=dob)
+    def build_entity(id: PatientID, user: User, age: int, dob: datetime, address: str) -> Patient:
+        return Patient(id=id, user=user, age=age, dob=dob, address=address)
 
     @classmethod
-    def build_entity_with_id(cls, user: User, age: int, dob: datetime) -> Patient:
+    def build_entity_with_id(cls, user: User, age: int, dob: datetime, address: str) -> Patient:
         entity_id = PatientID(uuid.uuid4())
-        return cls.build_entity(id=entity_id.value, user=user, age=age, dob=dob)
+        return cls.build_entity(id=entity_id.value, user=user, age=age, dob=dob, address=address)

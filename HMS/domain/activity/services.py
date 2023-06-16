@@ -12,7 +12,7 @@ from HMS.domain.activity.models import Activity, ActivityFactory
 class ActivityServices:
     """
     This creates model service that provide abstract layer over
-    model and user have to access service layer instead of accessing model.
+    a model, and user has to access service layer instead of an accessing model.
     """
 
     def get_activity_factory(

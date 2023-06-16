@@ -6,6 +6,13 @@ from HMS.domain.staff.services import StaffServices
 
 
 class StaffAppServices:
+    """
+    This module provides the application layer service for the Django domain-driven structure.
+    It encapsulates the business logic and acts as an intermediary between the presentation layer
+    (views) and the domain layer
+    (models and repositories).
+    """
+
     def __init__(self):
         self.staff_services = StaffServices()
 

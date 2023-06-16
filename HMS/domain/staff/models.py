@@ -1,5 +1,5 @@
 """
-This file define the structure of stored data,
+This file defines the structure of stored data,
 including the field types and possibly related information
 """
 
@@ -27,14 +27,14 @@ class Staff(Activity):
     This following class will contain Staff related information and database structure.
     """
 
-    nurse = "Nurse"
-    administrator = "Administrator"
-    pharmacist = "Pharmacist"
+    NURSE = "Nurse"
+    ADMINISTRATOR = "Administrator"
+    PHARMACIST = "Pharmacist"
 
     STAFF_TYPE = (
-        (nurse, 'Nurse'),
-        (administrator, 'Administrator'),
-        (pharmacist, 'Pharmacist')
+        (NURSE, 'Nurse'),
+        (ADMINISTRATOR, 'Administrator'),
+        (PHARMACIST, 'Pharmacist')
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -47,12 +47,12 @@ class Staff(Activity):
         db_table = "staff"
 
     def __str__(self):
-        return self.user.name
+        return f"Staff Name: {self.user.name} - Staff Type: {self.get_staff_type_display()}"
 
 
 class StaffFactory:
     """
-    This following class is a Factory method of above-mentioned model.
+    This following class is a Factory method of an above-mentioned model.
     """
 
     @staticmethod

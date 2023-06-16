@@ -1,5 +1,5 @@
 """
-This file define the structure of stored data,
+This file defines the structure of stored data,
 including the field types and possibly related information
 """
 
@@ -54,13 +54,13 @@ class User(AbstractUser, Activity):
     This Following module is for User Creation.
     Inheritance from Abstract User
     """
-    male = "Male"
-    female = "Female"
-    others = "Others"
+    MALE = "Male"
+    FEMALE = "Female"
+    OTHERS = "Others"
     GENDER_CHOICES = (
-        (male, "Male"),
-        (female, "Female"),
-        (others, "Others"),
+        (MALE, "Male"),
+        (FEMALE, "Female"),
+        (OTHERS, "Others"),
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None
@@ -96,7 +96,8 @@ class User(AbstractUser, Activity):
 class UserFactory:
     @staticmethod
     def build_entity(
-            id: UserID, email: str, is_admin: bool, is_active: bool, password: str, user_type: str
+            id: UserID, email: str, is_admin: bool, is_active: bool, password: str,
+            name: str, contact_no: str, gender: str
     ) -> User:
         return User(
             id=id,
@@ -104,12 +105,15 @@ class UserFactory:
             is_admin=is_admin,
             is_active=is_active,
             password=password,
-            user_type=user_type
+            name=name,
+            contact_no=contact_no,
+            gender=gender
         )
 
     @classmethod
     def build_entity_with_id(
-            cls, email: str, is_admin: bool, is_active: bool, password: str, user_type: str
+            cls, email: str, is_admin: bool, is_active: bool, password: str,
+            name: str, contact_no: str, gender: str
     ) -> User:
         entity_id = UserID(uuid.uuid4())
         return cls.build_entity(
@@ -118,4 +122,7 @@ class UserFactory:
             is_admin=is_admin,
             is_active=is_active,
             password=password,
+            name=name,
+            contact_no=contact_no,
+            gender=gender
         )

@@ -38,7 +38,8 @@ class Doctor(Activity):
         db_table = "doctor"
 
     def __str__(self):
-        return self.user.name
+        specialization_list = ", ".join(str(specialization) for specialization in self.specialization.all())
+        return f"Doctor Name: {self.user.name} - Specializations: {specialization_list}"
 
 
 class DoctorFactory:

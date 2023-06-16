@@ -1,5 +1,5 @@
 """
-This file define the structure of stored data,
+This file defines the structure of stored data,
 including the field types and possibly related information
 """
 
@@ -35,12 +35,12 @@ class Specialization(Activity):
         db_table = "specialization"
 
     def __str__(self):
-        return self.specialization
+        return self.title
 
 
 class SpecializationFactory:
     """
-    This following class is a Factory method of above-mentioned model.
+    This following class is a Factory method of an above-mentioned model.
     """
 
     @staticmethod
