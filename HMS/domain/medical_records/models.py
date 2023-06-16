@@ -5,15 +5,12 @@ including the field types and possibly related information
 
 import uuid
 from dataclasses import dataclass
-from datetime import datetime
 
 from django.db import models
 
 from HMS.domain.activity.models import Activity
 from HMS.domain.doctor.models import Doctor
 from HMS.domain.patient.models import Patient
-from HMS.domain.staff.models import Staff
-from HMS.domain.user.models import User
 
 
 @dataclass(frozen=True)
@@ -34,7 +31,6 @@ class MedicalRecord(Activity):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    record_date = models.DateField(auto_now_add=True)
     description = models.TextField()
 
     class Meta:
@@ -52,13 +48,13 @@ class MedicalRecordFactory:
     """
 
     @staticmethod
-    def build_entity(id: id, patient: Patient, doctor: Doctor, record_date: datetime,
+    def build_entity(id: id, patient: Patient, doctor: Doctor,
                      description: str) -> MedicalRecord:
-        return MedicalRecord(id=id, patient=patient, doctor=doctor, record_date=record_date, description=description)
+        return MedicalRecord(id=id, patient=patient, doctor=doctor, description=description)
 
     @classmethod
-    def build_entity_with_id(cls, patient: Patient, doctor: Doctor, record_date: datetime,
+    def build_entity_with_id(cls, patient: Patient, doctor: Doctor,
                              description: str) -> MedicalRecord:
         entity_id = MedicalRecordID(uuid.uuid4())
-        return cls.build_entity(id=entity_id, patient=patient, doctor=doctor, record_date=record_date,
+        return cls.build_entity(id=entity_id, patient=patient, doctor=doctor,
                                 description=description)

@@ -29,19 +29,10 @@ class Patient(Activity):
     Patient tabel.
     """
 
-    GENDER_CHOICES = (
-        ("Male", "Male"),
-        ("Female", "Female"),
-        ("Other", "Other")
-    )
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=150, null=True, blank=True)
+    age = models.PositiveIntegerField()
     dob = models.DateField(null=True, blank=True)
-    gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=True)
-    contact_no = models.CharField(max_length=12, null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Patient"
@@ -49,7 +40,7 @@ class Patient(Activity):
         db_table = "patient"
 
     def __str__(self):
-        return self.name
+        return self.user.name
 
 
 class PatientFactory:
@@ -58,14 +49,10 @@ class PatientFactory:
     """
 
     @staticmethod
-    def build_entity(id: PatientID, name: str, user: User, dob: datetime, gender: str, contact_no: str,
-                     address: str) -> Patient:
-        return Patient(id=id, user=user, name=name, dob=dob, gender=gender, contact_no=contact_no,
-                       address=address)
+    def build_entity(id: PatientID, user: User, age: int, dob: datetime) -> Patient:
+        return Patient(id=id, user=user, age=age, dob=dob)
 
     @classmethod
-    def build_entity_with_id(cls, name: str, user: User, dob: datetime, gender: str, contact_no: str,
-                             address: str) -> Patient:
+    def build_entity_with_id(cls, user: User, age: int, dob: datetime) -> Patient:
         entity_id = PatientID(uuid.uuid4())
-        return cls.build_entity(id=entity_id.value, user=user, name=name, dob=dob, gender=gender, contact_no=contact_no,
-                                address=address)
+        return cls.build_entity(id=entity_id.value, user=user, age=age, dob=dob)

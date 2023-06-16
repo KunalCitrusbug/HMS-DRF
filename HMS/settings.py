@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "HMS.domain.patient",
     "HMS.domain.medical_records",
     "HMS.domain.doctor",
+    "HMS.domain.specialization",
     # Third-Party Applications
     "rest_framework",
     "rest_framework_simplejwt",

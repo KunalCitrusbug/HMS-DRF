@@ -10,6 +10,8 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from HMS.domain.activity.models import Activity
+
 
 @dataclass(frozen=True)
 class UserID:
@@ -47,21 +49,22 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractUser):
+class User(AbstractUser, Activity):
     """
     This Following module is for User Creation.
     Inheritance from Abstract User
     """
-
-    USER_TYPE_CHOICE = (
-        ("Patient", "Patient"),
-        ("Staff", "Staff"),
-        ("Admin", "Admin"),
-        ("Doctor", "Doctor"),
+    male = "Male"
+    female = "Female"
+    others = "Others"
+    GENDER_CHOICES = (
+        (male, "Male"),
+        (female, "Female"),
+        (others, "Others"),
     )
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None
+    date_joined = None
     email = models.EmailField("email address", unique=True)
     is_admin = models.BooleanField(default=False)
     is_forget = models.BooleanField(default=False)
@@ -73,9 +76,9 @@ class User(AbstractUser):
             "Unselect this instead of deleting accounts."
         ),
     )
-    user_type = models.CharField(max_length=100, choices=USER_TYPE_CHOICE)
-    entity_id = models.CharField(max_length=250, null=True, blank=True)
-
+    name = models.CharField(max_length=150)
+    contact_no = models.CharField(max_length=12)
+    gender = models.CharField(max_length=50, choices=GENDER_CHOICES)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -115,5 +118,4 @@ class UserFactory:
             is_admin=is_admin,
             is_active=is_active,
             password=password,
-            user_type=user_type
         )
