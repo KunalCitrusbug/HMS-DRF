@@ -28,12 +28,15 @@ class APIResponse:
 
     def success(self, data: dict = {}, message: str = None) -> Response:
         """This method will create a custom response for success event with response status 200."""
+        try:
+            success_message = message if message else self.success_message()
+            response_data = self.struct_response(
+                data=data, success=True, message=success_message
+            )
+            return Response(response_data, status=status.HTTP_200_OK)
 
-        success_message = message if message else self.success_message()
-        response_data = self.struct_response(
-            data=data, success=True, message=success_message
-        )
-        return Response(response_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            raise Exception("Error:", e)
 
     def fail(self, status, errors: dict, message: Union[str, dict]) -> Response:
         """This method will create custom response for failure event with custom response status."""

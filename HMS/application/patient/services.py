@@ -22,6 +22,8 @@ class PatientAppServices:
 
     def create_patient(self, patient_data: Dict[str, Any], user_data: Dict[str, Any]) -> Patient:
         try:
+            # Create user
+
             patient = self.patient_services.get_patient_factory().build_entity_with_id(
                 age=data['age'], dob=data['dob'], address=data['address'], user=user
             )
