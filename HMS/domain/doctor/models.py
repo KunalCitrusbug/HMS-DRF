@@ -39,7 +39,7 @@ class Doctor(Activity):
 
     def __str__(self):
         specialization_list = ", ".join(str(specialization) for specialization in self.specialization.all())
-        return f"Doctor Name: {self.user.name} - Specializations: {specialization_list}"
+        return f"Doctor Name: {self.user.name}"
 
 
 class DoctorFactory:
@@ -48,10 +48,10 @@ class DoctorFactory:
     """
 
     @staticmethod
-    def build_entity(id: DoctorID, user: User, name: str, specialization: Specialization) -> Doctor:
-        return Doctor(id=id, user=user, specialization=specialization)
+    def build_entity(id: DoctorID, user: User) -> Doctor:
+        return Doctor(id=id, user=user)
 
     @classmethod
-    def build_entity_with_id(cls, user: User, specialization: Specialization) -> Doctor:
+    def build_entity_with_id(cls, user: User) -> Doctor:
         entity_id = DoctorID(uuid.uuid4())
-        return cls.build_entity(id=entity_id.value, user=user, specialization=specialization)
+        return cls.build_entity(id=entity_id.value, user=user)

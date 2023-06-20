@@ -27,9 +27,18 @@ class RegisterView(APIView):
                 serializer = UserSerializer(data=request.data)
                 if serializer.is_valid():
                     create_user = self.user_service.create_user(data=serializer.data)
-                    data = {'email': create_user.email, 'name': create_user.name, 'contact_no': create_user.contact_no,
-                            'gender': create_user.gender}
-                    return self.api_response.success(data=data, message="User Created Success")
+                    if create_user:
+                        data = {'email': create_user.email, 'name': create_user.name, 'contact_no': create_user.contact_no,
+                                'gender': create_user.gender}
+                        return self.api_response.success(data=data, message="User Created Success")
+                    else:
+                        # Handle the case when the user is not created
+                        return self.api_response.fail(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                                      errors={}, message="Failed to create user")
+                else:
+                    return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST, errors=serializer.errors,
+                                                  message="Validation Error")
+
         except ValidationError as e:
             # Handle validation errors
             errors = e.get_full_details()  # Get detailed error messages

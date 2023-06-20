@@ -32,7 +32,8 @@ class UserAppServices:
                 password=data['password'],
                 name=data['name'],
                 contact_no=data['contact_no'],
-                gender=data['gender']
+                gender=data['gender'],
+                user_type=data['user_type']
             )
             user.set_password(data['password'])
             user.save()

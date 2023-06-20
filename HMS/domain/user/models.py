@@ -62,6 +62,17 @@ class User(AbstractUser, Activity):
         (FEMALE, "Female"),
         (OTHERS, "Others"),
     )
+    ADMIN = "Admin"
+    DOCTOR = "Doctor"
+    STAFF = "Staff"
+    PATIENT = "Patient"
+    USER_TYPE = (
+        (ADMIN, "Admin"),
+        (DOCTOR, "Doctor"),
+        (STAFF, "Staff"),
+        (PATIENT, "Patient")
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None
     date_joined = None
@@ -76,6 +87,7 @@ class User(AbstractUser, Activity):
             "Unselect this instead of deleting accounts."
         ),
     )
+    user_type = models.CharField(max_length=50, choices=USER_TYPE)
     name = models.CharField(max_length=150)
     contact_no = models.CharField(max_length=12)
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES)
@@ -97,7 +109,7 @@ class UserFactory:
     @staticmethod
     def build_entity(
             id: UserID, email: str, is_admin: bool, is_active: bool, password: str,
-            name: str, contact_no: str, gender: str
+            name: str, contact_no: str, gender: str, user_type: str
     ) -> User:
         return User(
             id=id,
@@ -107,13 +119,14 @@ class UserFactory:
             password=password,
             name=name,
             contact_no=contact_no,
-            gender=gender
+            gender=gender,
+            user_type=user_type
         )
 
     @classmethod
     def build_entity_with_id(
             cls, email: str, is_admin: bool, is_active: bool, password: str,
-            name: str, contact_no: str, gender: str
+            name: str, contact_no: str, gender: str, user_type: str
     ) -> User:
         entity_id = UserID(uuid.uuid4())
         return cls.build_entity(
@@ -124,5 +137,6 @@ class UserFactory:
             password=password,
             name=name,
             contact_no=contact_no,
-            gender=gender
+            gender=gender,
+            user_type=user_type
         )

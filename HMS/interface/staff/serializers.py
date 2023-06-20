@@ -11,4 +11,5 @@ from HMS.domain.staff.models import Staff
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
-        fields = ["id", "name", "staff_type", "specialization", "doj", "contact_no"]
+        fields = ["staff_type"]
+

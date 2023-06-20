@@ -4,6 +4,9 @@ for instance and send back response to the Interface layer.
 """
 from typing import Any, Dict
 
+from django.db import transaction
+
+from HMS.application.user.services import UserAppServices
 from HMS.domain.patient.models import Patient
 from HMS.domain.patient.services import PatientServices
 from HMS.domain.user.models import User
@@ -17,17 +20,20 @@ class PatientAppServices:
     (models and repositories).
     """
 
+    user_service = UserAppServices()
+
     def __init__(self):
         self.patient_services = PatientServices()
 
     def create_patient(self, patient_data: Dict[str, Any], user_data: Dict[str, Any]) -> Patient:
+        user = self.user_service.create_user(data=user_data)
         try:
-            # Create user
-
             patient = self.patient_services.get_patient_factory().build_entity_with_id(
-                age=data['age'], dob=data['dob'], address=data['address'], user=user
+                age=patient_data['age'], dob=patient_data['dob'], address=patient_data['address'], user=user
             )
             patient.save()
             return patient
         except Exception as e:
-            raise Exception("Error in Patient service:", e)
+            # Optionally, handle the exception or log the error
+            raise ValueError("Error in Patient service: {}".format(str(e)))
+
