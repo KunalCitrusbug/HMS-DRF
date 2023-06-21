@@ -33,7 +33,6 @@ class Staff(Activity):
 
     STAFF_TYPE = (
         (NURSE, 'Nurse'),
-        (ADMINISTRATOR, 'Administrator'),
         (PHARMACIST, 'Pharmacist')
     )
 

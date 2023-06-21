@@ -28,3 +28,23 @@ def create(self, validated_data: Dict[str, Any]) -> User:
 
     create_user = self.user_service.create_user(data=validated_data)
     return create_user
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    """
+    This serializer class is used to convert model instances for User's list.
+    """
+
+    class Meta:
+        model = User
+        fields = ["email", "name", "contact_no", "gender"]
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    """
+    This serializer class is used to convert model instances for updating user.
+    """
+
+    class Meta:
+        model = User
+        fields = ["name", "contact_no", "gender"]

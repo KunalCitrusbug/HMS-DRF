@@ -4,19 +4,23 @@ You can define different view properties here.
 """
 from django.db import transaction
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from HMS.application.patient.services import PatientAppServices
 from HMS.application.staff.services import StaffAppServices
-from HMS.domain.user.services import UserServices
-from HMS.interface.patient.serializers import PatientSerializer
-from HMS.interface.staff.serializers import StaffSerializer
+from HMS.interface.staff.serializers import StaffSerializer, StaffListSerializer
 from HMS.interface.user.serializers import UserSerializer
 from HMS.interface.utils import APIResponse
+from HMS.permissions import IsStaffViewPermission, IsStaffSelf
 
 
 class StaffCreateView(APIView):
+    """
+    This class represents an API view for creating a staff profile.
+    """
+
     staff_service = StaffAppServices()
     api_response = APIResponse()
 
@@ -46,3 +50,44 @@ class StaffCreateView(APIView):
                                                   message="Validation Error")
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StaffListView(APIView):
+    """
+    This class represents an API view for fetching a list of staff members.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated & IsStaffViewPermission]
+    staff_service = StaffAppServices()
+    api_response = APIResponse()
+
+    def get(self, request):
+        try:
+            staff = self.staff_service.fetch_staff_list()
+            data = StaffListSerializer(staff, many=True)
+            return self.api_response.success(message="Staff List", data=data.data)
+        except Exception as e:
+            return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST,
+                                          errors={}, message="Failed to fetch Staff list: " + str(e))
+
+
+class FetchStaffView(APIView):
+    """
+    This class represents an API view for fetching details of a staff member.
+    """
+    
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated & IsStaffViewPermission | IsStaffSelf]
+    staff_service = StaffAppServices()
+    api_response = APIResponse()
+
+    def get(self, request, *args, **kwargs):
+        try:
+            staff = self.staff_service.staff_details(staff_id=self.kwargs.get("uuid"))
+            serialized_data = StaffListSerializer(staff)
+            return self.api_response.success(message="Staff's Details", data=serialized_data.data)
+
+        except Exception as e:
+            return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST,
+                                          errors={}, message="Failed to fetch staff's details: " + str(e))

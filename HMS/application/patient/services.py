@@ -2,9 +2,10 @@
 This Following file will contain App level services functions that call domain layer
 for instance and send back response to the Interface layer.
 """
-from typing import Any, Dict
+from typing import Any, Dict, Type
 
 from django.db import transaction
+from django.db.models import QuerySet
 
 from HMS.application.user.services import UserAppServices
 from HMS.domain.patient.models import Patient
@@ -36,4 +37,25 @@ class PatientAppServices:
         except Exception as e:
             # Optionally, handle the exception or log the error
             raise ValueError("Error in Patient service: {}".format(str(e)))
+
+    def fetch_patients_list(self) -> QuerySet:
+        """
+        This method is responsible for fetching a list of patients from the database.
+        """
+
+        try:
+            patients = self.patient_services.get_patient_repo().all()
+            return patients
+        except Exception as e:
+            raise Exception("Error while fetching Patient list:{}".format(str(e)))
+
+    def patient_details(self, patient_id) -> Type[Patient]:
+        """
+        This method is responsible for fetching the details of a specific patient based on the provided patient_id.
+        """
+        try:
+            patient = self.patient_services.get_patient_by_id(patient_id=patient_id)
+            return patient
+        except Exception as e:
+            raise Exception("Error while fetching patient's details:", e)
 

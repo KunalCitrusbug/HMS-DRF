@@ -9,14 +9,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from HMS.application.doctor.services import DoctorAppServices
-from HMS.domain.doctor.models import Doctor
-from HMS.interface.doctor.serializers import DoctorSerializer
+from HMS.interface.doctor.serializers import DoctorListSerializer
 from HMS.interface.user.serializers import UserSerializer
 from HMS.interface.utils import APIResponse
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from HMS.permissions import IsDoctorViewPermission, IsDoctorSelf
+
 
 class DoctorCreateView(APIView):
+    """
+    This class represents an API view for creating a doctor's profile.
+    """
     doctor_service = DoctorAppServices()
     api_response = APIResponse()
 
@@ -45,19 +49,43 @@ class DoctorCreateView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class FetchDoctor(APIView):
+class DoctorListView(APIView):
+    """
+    This class represents an API view for fetching a list of doctors.
+    """
+
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated & IsDoctorViewPermission]
     api_response = APIResponse()
+    doctor_service = DoctorAppServices()
 
     def get(self, request):
-        doctors = Doctor.objects.all()
-        data = {}
-        for obj in doctors:
-            import pdb;pdb.set_trace()
+        try:
+            doctors = self.doctor_service.fetch_doctors_list()
+            data = DoctorListSerializer(doctors, many=True)
+            return self.api_response.success(message="Doctor", data=data.data)
+        except Exception as e:
+            return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST,
+                                          errors={}, message="Failed to fetch doctors list: " + str(e))
 
-            data[obj]['Name'] = obj.user.name
-            data[obj]['Contact'] = obj.user.contact_no
-            data[obj]['Gender'] = obj.user.gender
-            data[obj]['Name'] = obj.user.name
-        return self.api_response.success(message="Doctor", data=data)
+
+class FetchDoctorView(APIView):
+    """
+    This class represents an API view for fetching doctor details.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated & IsDoctorViewPermission | IsDoctorSelf]
+    api_response = APIResponse()
+    doctor_service = DoctorAppServices()
+
+    def get(self, request, *args, **kwargs):
+        # Fetch Doctor's Details
+        try:
+            doctor = self.doctor_service.doctor_details(doctor_id=self.kwargs.get("uuid"))
+            serialized_data = DoctorListSerializer(doctor)
+            return self.api_response.success(message="Doctor", data=serialized_data.data)
+
+        except Exception as e:
+            return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST,
+                                          errors={}, message="Failed to fetch doctor's details: " + str(e))

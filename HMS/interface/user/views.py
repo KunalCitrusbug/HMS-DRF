@@ -2,6 +2,7 @@
 This is a view module to define a list, create, update, delete views.
 You can define different view properties here.
 """
+
 from django.db import transaction
 from rest_framework import status
 from rest_framework.exceptions import ValidationError

@@ -6,9 +6,10 @@ and generate the HTTP response.
 
 from django.urls import path
 
-from HMS.interface.doctor.views import DoctorCreateView, FetchDoctor
+from HMS.interface.doctor.views import DoctorCreateView, DoctorListView, FetchDoctorView
 
 urlpatterns = [
     path('register/', DoctorCreateView.as_view(), name="doctor-register"),
-    path('doctor-list/', FetchDoctor.as_view(), name="doctor-list"),
+    path('doctor-list/', DoctorListView.as_view(), name="doctor-list"),
+    path('fetch-doctor/<uuid:uuid>/', FetchDoctorView.as_view(), name="fetch-doctor"),
 ]
