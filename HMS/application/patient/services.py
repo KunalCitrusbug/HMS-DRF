@@ -11,6 +11,7 @@ from HMS.application.user.services import UserAppServices
 from HMS.domain.patient.models import Patient
 from HMS.domain.patient.services import PatientServices
 from HMS.domain.user.models import User
+from HMS.interface.utils.password_validator import password_validator
 
 
 class PatientAppServices:
@@ -28,15 +29,11 @@ class PatientAppServices:
 
     def create_patient(self, patient_data: Dict[str, Any], user_data: Dict[str, Any]) -> Patient:
         user = self.user_service.create_user(data=user_data)
-        try:
-            patient = self.patient_services.get_patient_factory().build_entity_with_id(
-                age=patient_data['age'], dob=patient_data['dob'], address=patient_data['address'], user=user
-            )
-            patient.save()
-            return patient
-        except Exception as e:
-            # Optionally, handle the exception or log the error
-            raise ValueError("Error in Patient service: {}".format(str(e)))
+        patient = self.patient_services.get_patient_factory().build_entity_with_id(
+            age=patient_data['age'], dob=patient_data['dob'], address=patient_data['address'], user=user
+        )
+        patient.save()
+        return patient
 
     def fetch_patients_list(self) -> QuerySet:
         """

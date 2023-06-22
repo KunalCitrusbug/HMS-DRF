@@ -2,18 +2,19 @@
 This following file is responsible for converting complex data types, such as Django model instances,
 into a format suitable for rendering in API responses or for parsing in request data.
 """
-
 from rest_framework import serializers
 from typing import Dict, Any
-from HMS.application.user.services import UserAppServices
+
+from rest_framework.exceptions import ValidationError
+
 from HMS.domain.user.models import User
+from HMS.interface.utils.password_validator import password_validator
 
 
 class UserSerializer(serializers.ModelSerializer):
     """
     This serializer class is used to convert model instances to JSON representation and vice versa.
     """
-    user_service = UserAppServices()
 
     class Meta:
         model = User

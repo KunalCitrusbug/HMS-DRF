@@ -21,3 +21,13 @@ class DoctorListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = ['id', 'user', 'specialization']
+
+
+class DoctorUpdateSerializer(serializers.ModelSerializer):
+    """
+    This serializer class is used to convert model instances to JSON representation for Doctor update.
+    """
+
+    class Meta:
+        model = Doctor
+        fields = ['specialization']

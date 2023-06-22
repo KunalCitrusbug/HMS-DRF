@@ -86,3 +86,34 @@ class IsStaffSelf(BasePermission):
             staff_uuid = self.staff_service.get_staff_repo().get(user=request.user)
             staff_uuid = staff_uuid.id
         return staff_uuid == requested_uuid
+
+
+class IsDoctorCreate(BasePermission):
+    """
+    This permission class determines whether an authenticated user is a Staff user and also it cross-verify that
+    a staff user is accessing its own profile only.
+    """
+
+    def has_permission(self, request, view) -> bool:
+        return request.user.user_type == 'Admin'
+
+
+class IsStaffCreate(BasePermission):
+    """
+    This permission class determines whether an authenticated user is a Staff user and also it cross-verify that
+    a staff user is accessing its own profile only.
+    """
+
+    def has_permission(self, request, view, *args, **kwargs) -> bool:
+            return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor'
+
+
+class IsPatientCreate(BasePermission):
+    """
+    This permission class determines whether an authenticated user is a Staff user and also it cross-verify that
+    a staff user is accessing its own profile only.
+    """
+
+    def has_permission(self, request, view, *args, **kwargs) -> bool:
+            return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor' or \
+                request.user.user_type == 'Staff'

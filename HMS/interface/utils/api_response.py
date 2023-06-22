@@ -26,14 +26,14 @@ class APIResponse:
     def success_message(self):
         return f'{self.caller_function.replace("_", "-").title()} Successful.'
 
-    def success(self, data: dict = {}, message: str = None) -> Response:
+    def success(self, status, data: dict = {}, message: str = None) -> Response:
         """This method will create a custom response for success event with response status 200."""
         try:
             success_message = message if message else self.success_message()
             response_data = self.struct_response(
                 data=data, success=True, message=success_message
             )
-            return Response(response_data, status=status.HTTP_200_OK)
+            return Response(response_data, status=status)
 
         except Exception as e:
             raise Exception("Error:", e)

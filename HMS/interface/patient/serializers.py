@@ -36,7 +36,7 @@ class PatientListSerializer(serializers.ModelSerializer):
 
 class PatientUpdateSerializer(serializers.ModelSerializer):
     """
-    This serializer class is used to convert model instances for a Patient list
+    This serializer class is used to convert model instances for a Patient Update
     """
 
     class Meta:

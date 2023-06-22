@@ -12,8 +12,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from HMS.application.staff.services import StaffAppServices
 from HMS.interface.staff.serializers import StaffSerializer, StaffListSerializer
 from HMS.interface.user.serializers import UserSerializer
-from HMS.interface.utils import APIResponse
-from HMS.permissions import IsStaffViewPermission, IsStaffSelf
+from HMS.interface.utils.api_response import APIResponse
+from HMS.permissions import IsStaffViewPermission, IsStaffSelf, IsStaffCreate
 
 
 class StaffCreateView(APIView):
@@ -21,6 +21,8 @@ class StaffCreateView(APIView):
     This class represents an API view for creating a staff profile.
     """
 
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated & IsStaffCreate]
     staff_service = StaffAppServices()
     api_response = APIResponse()
 
@@ -72,11 +74,11 @@ class StaffListView(APIView):
                                           errors={}, message="Failed to fetch Staff list: " + str(e))
 
 
-class FetchStaffView(APIView):
+class StaffDetailView(APIView):
     """
-    This class represents an API view for fetching details of a staff member.
+    This class represents an API view for fetching and updating details of a staff member.
     """
-    
+
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated & IsStaffViewPermission | IsStaffSelf]
     staff_service = StaffAppServices()
@@ -91,3 +93,28 @@ class FetchStaffView(APIView):
         except Exception as e:
             return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST,
                                           errors={}, message="Failed to fetch staff's details: " + str(e))
+
+    def patch(self, request, *args, **kwargs):
+        try:
+            staff = self.patient_service.patient_details(patient_id=self.kwargs.get("uuid"))
+            user_obj = patient_obj.user
+            patient_serializer = PatientUpdateSerializer(patient_obj, data=request.data, partial=True)
+            user_serializer = UserUpdateSerializer(user_obj, data=request.data, partial=True)
+            if patient_serializer.is_valid() and user_serializer.is_valid():
+                user_serializer.save()
+                patient_serializer.save()
+                serialized_data = PatientListSerializer(patient_obj)
+                return self.api_response.success(message="Patient's Details Updated", data=serialized_data.data)
+            else:
+                errors = {}
+                if not patient_serializer.is_valid():
+                    errors.update(patient_serializer.errors)
+                if not user_serializer.is_valid():
+                    errors.update(user_serializer.errors)
+
+                return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST, errors=errors,
+                                              message="Validation Error")
+        except Exception as e:
+            return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST,
+                                          errors={}, message="Failed to update patient: " + str(e))
+
