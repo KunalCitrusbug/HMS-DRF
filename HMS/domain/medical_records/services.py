@@ -6,7 +6,7 @@ from typing import Type
 
 from django.db.models.manager import BaseManager
 
-from HMS.domain.medical_records.models import MedicalRecord
+from HMS.domain.medical_records.models import MedicalRecord, MedicalRecordFactory
 from HMS.domain.staff.models import Staff, StaffFactory
 
 
@@ -18,8 +18,8 @@ class MedicalRecordServices:
 
     def get_medical_record_factory(
             self,
-    ) -> Type[MedicalRecord]:
-        return MedicalRecord
+    ) -> Type[MedicalRecordFactory]:
+        return MedicalRecordFactory
 
     def get_medical_record_repo(self) -> BaseManager[MedicalRecord]:
         return MedicalRecord.objects

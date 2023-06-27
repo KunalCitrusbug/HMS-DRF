@@ -117,3 +117,4 @@ class IsPatientCreate(BasePermission):
     def has_permission(self, request, view, *args, **kwargs) -> bool:
             return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor' or \
                 request.user.user_type == 'Staff'
+

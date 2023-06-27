@@ -29,7 +29,7 @@ class MedicalRecord(Activity):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, unique=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     description = models.TextField()
 
@@ -56,5 +56,5 @@ class MedicalRecordFactory:
     def build_entity_with_id(cls, patient: Patient, doctor: Doctor,
                              description: str) -> MedicalRecord:
         entity_id = MedicalRecordID(uuid.uuid4())
-        return cls.build_entity(id=entity_id, patient=patient, doctor=doctor,
+        return cls.build_entity(id=entity_id.value, patient=patient, doctor=doctor,
                                 description=description)

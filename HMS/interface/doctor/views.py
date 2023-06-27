@@ -2,6 +2,7 @@
 This is a view module to define a list, create, update, delete views.
 You can define different view properties here.
 """
+
 import json
 
 from django.db import transaction
@@ -29,7 +30,6 @@ class DoctorCreateView(APIView):
     permission_classes = [IsAuthenticated & IsDoctorCreate]
 
     def post(self, request):
-        pass
         try:
             with transaction.atomic():
                 user_serializer = UserSerializer(data=request.data)
@@ -39,7 +39,7 @@ class DoctorCreateView(APIView):
                     if create_doctor:
                         data = {'Name': create_doctor.user.name, 'Contact': create_doctor.user.contact_no,
                                 'Gender': create_doctor.user.gender}
-                        return self.api_response.success(data=data, message="Patient Created Success",
+                        return self.api_response.success(data=data, message="Doctor Created Success",
                                                          status=status.HTTP_201_CREATED)
                     else:
                         return self.api_response.fail(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
