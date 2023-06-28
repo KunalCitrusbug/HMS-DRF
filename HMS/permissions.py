@@ -39,11 +39,21 @@ class IsDoctorSelf(BasePermission):
 
 class IsPatientViewPermission(BasePermission):
     """
-    This permission class determines whether a user has permission to access a view specifically designed for doctors.
+    This permission class determines whether a user has permission to access a view specifically designed for patients.
     """
 
     def has_permission(self, request, view) -> bool:
-        return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor'
+        return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor' or request.user.user_type == "Staff"
+
+
+class IsAppointmentPermission(BasePermission):
+    """
+    This permission class determines whether a user has permission to access a view specifically designed for
+    Appointments.
+    """
+
+    def has_permission(self, request, view) -> bool:
+        return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor' or request.user.user_type == "Staff"
 
 
 class IsPatientSelf(BasePermission):
@@ -105,7 +115,7 @@ class IsStaffCreate(BasePermission):
     """
 
     def has_permission(self, request, view, *args, **kwargs) -> bool:
-            return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor'
+        return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor'
 
 
 class IsPatientCreate(BasePermission):
@@ -115,6 +125,5 @@ class IsPatientCreate(BasePermission):
     """
 
     def has_permission(self, request, view, *args, **kwargs) -> bool:
-            return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor' or \
-                request.user.user_type == 'Staff'
-
+        return request.user.user_type == 'Admin' or request.user.user_type == 'Doctor' or \
+               request.user.user_type == 'Staff'

@@ -42,7 +42,7 @@ class DoctorCreateView(APIView):
                         return self.api_response.success(data=data, message="Doctor Created Success",
                                                          status=status.HTTP_201_CREATED)
                     else:
-                        return self.api_response.fail(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        return self.api_response.fail(status=status.HTTP_400_INTERNAL_SERVER_ERROR,
                                                       errors={}, message="Failed to create Doctor")
                 else:
                     errors = {}
@@ -51,7 +51,8 @@ class DoctorCreateView(APIView):
                     return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST, errors=errors,
                                                   message="Validation Error")
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return self.api_response.fail(status=status.HTTP_400_BAD_REQUEST,
+                                          errors={}, message="Failed to create doctor: " + str(e))
 
 
 class DoctorListView(APIView):

@@ -3,7 +3,7 @@ This Following file will contain App level services functions that call domain l
 for instance and send back response to the Interface layer.
 """
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Type
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import QuerySet
@@ -54,7 +54,7 @@ class MedicalRecordAppService:
 
     def fetch_medical_record_list(self) -> QuerySet:
         """
-        This method is responsible for fetching a list of patients from the database.
+        This method is responsible for fetching a list of medical records from the database.
         """
 
         try:
@@ -62,3 +62,14 @@ class MedicalRecordAppService:
             return medical_records
         except Exception as e:
             raise Exception("Error while fetching Patient list:{}".format(str(e)))
+
+    def medical_record_details(self, medical_record_id) -> Type[MedicalRecord]:
+        """
+        This method is responsible for fetching the details of a specific medical record based on the provided
+         medical_record_id.
+        """
+        try:
+            medical_record = self.medical_record_service.get_medical_record_by_id(id=medical_record_id)
+            return medical_record
+        except Exception as e:
+            raise Exception("Error while fetching Medical Record's details:", e)

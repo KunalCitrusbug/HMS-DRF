@@ -46,7 +46,7 @@ class PatientAppServices:
         except Exception as e:
             raise Exception("Error while fetching Patient list:{}".format(str(e)))
 
-    def patient_details(self, patient_id) -> Type[Patient]:
+    def patient_details(self, patient_id) -> Patient:
         """
         This method is responsible for fetching the details of a specific patient based on the provided patient_id.
         """

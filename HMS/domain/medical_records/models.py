@@ -29,7 +29,7 @@ class MedicalRecord(Activity):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, unique=True)
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     description = models.TextField()
 

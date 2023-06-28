@@ -6,8 +6,13 @@ class InvalidPasswordException(ValidationError):
     pass
 
 
+class DoctorNotAvaliableException(Exception):
+    pass
+
+
 class PatientNotExistsException(ObjectDoesNotExist):
     pass
+
 
 class DoctorNotExistsException(ObjectDoesNotExist):
     pass

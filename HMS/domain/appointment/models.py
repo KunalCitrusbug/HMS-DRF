@@ -34,6 +34,7 @@ class Appointment(Activity):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
+    is_completed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Appointment"
@@ -58,4 +59,4 @@ class AppointmentFactory:
     def build_entity_with_id(cls, patient: Patient, doctor: Doctor,
                              date: datetime, time: datetime) -> Appointment:
         entity_id = AppointmentID(uuid.uuid4())
-        return cls.build_entity(id=entity_id, patient=patient, doctor=doctor, date=date, time=time)
+        return cls.build_entity(id=entity_id.value, patient=patient, doctor=doctor, date=date, time=time)

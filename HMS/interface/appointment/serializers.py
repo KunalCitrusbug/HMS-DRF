@@ -5,37 +5,34 @@ into a format suitable for rendering in API responses or for parsing in request 
 
 from rest_framework import serializers
 
-from HMS.domain.doctor.models import Doctor
-from HMS.domain.medical_records.models import MedicalRecord
-from HMS.interface.specialization.serializers import SpecializationSerializer
-from HMS.interface.user.serializers import UserListSerializer
+from HMS.domain.appointment.models import Appointment
 
 
-class MedicalRecordCreateSerializer(serializers.ModelSerializer):
+class AppointmentCreateSerializer(serializers.ModelSerializer):
     """
     This serializer class is used to convert model instances to JSON representation and vice versa.
     """
 
     class Meta:
-        model = MedicalRecord
-        fields = ['patient', 'doctor', 'description']
+        model = Appointment
+        fields = ('patient', 'doctor', 'date', 'time')
 
 
-class MedicalRecordListSerializer(serializers.ModelSerializer):
+class AppointmentListSerializer(serializers.ModelSerializer):
     """
     This serializer class is used to convert model instances to JSON representation and vice versa.
     """
 
     class Meta:
-        model = MedicalRecord
+        model = Appointment
         fields = '__all__'
 
 
-class MedicalRecordUpdateSerializer(serializers.ModelSerializer):
+class AppointmentUpdateSerializer(serializers.ModelSerializer):
     """
     This serializer class is used to convert model instances to JSON representation and vice versa.
     """
 
     class Meta:
-        model = MedicalRecord
-        fields = ['doctor', 'description']
+        model = Appointment
+        fields = ('doctor', 'date', 'time')
