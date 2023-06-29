@@ -9,9 +9,10 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import UserSerializer
-from ..utils.api_response import APIResponse
+
 from ...application.user.services import UserAppServices
+from ..utils.api_response import APIResponse
+from .serializers import UserSerializer
 
 
 class RegisterView(APIView):

@@ -5,7 +5,7 @@ You can define different view properties here.
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from rest_framework import status
-from rest_framework.generics import RetrieveUpdateAPIView, DestroyAPIView
+from rest_framework.generics import DestroyAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,11 +13,14 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from HMS.application.medical_record.services import MedicalRecordAppService
 from HMS.domain.medical_records.models import MedicalRecord
-from HMS.interface.medical_record.serializers import MedicalRecordCreateSerializer, MedicalRecordUpdateSerializer, \
-    MedicalRecordListSerializer
+from HMS.interface.medical_record.serializers import (
+    MedicalRecordCreateSerializer, MedicalRecordListSerializer,
+    MedicalRecordUpdateSerializer)
 from HMS.interface.utils.api_response import APIResponse
-from HMS.interface.utils.exceptions import PatientNotExistsException, DoctorNotExistsException
-from HMS.permissions import IsPatientCreate, IsPatientViewPermission, IsPatientSelf
+from HMS.interface.utils.exceptions import (DoctorNotExistsException,
+                                            PatientNotExistsException)
+from HMS.permissions import (IsPatientCreate, IsPatientSelf,
+                             IsPatientViewPermission)
 
 
 class MedicalRecordCreateView(APIView):

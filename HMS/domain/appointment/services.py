@@ -6,7 +6,7 @@ from typing import Type
 
 from django.db.models.manager import BaseManager
 
-from HMS.domain.appointment.models import AppointmentFactory, Appointment
+from HMS.domain.appointment.models import Appointment, AppointmentFactory
 from HMS.domain.patient.models import Patient, PatientFactory
 
 

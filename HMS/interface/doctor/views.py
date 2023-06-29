@@ -8,16 +8,16 @@ import json
 from django.db import transaction
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from HMS.application.doctor.services import DoctorAppServices
-from HMS.interface.doctor.serializers import DoctorListSerializer, DoctorUpdateSerializer
-from HMS.interface.user.serializers import UserSerializer, UserUpdateSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from HMS.application.doctor.services import DoctorAppServices
+from HMS.interface.doctor.serializers import (DoctorListSerializer,
+                                              DoctorUpdateSerializer)
+from HMS.interface.user.serializers import UserSerializer, UserUpdateSerializer
 from HMS.interface.utils.api_response import APIResponse
-from HMS.permissions import IsDoctorViewPermission, IsDoctorSelf, IsDoctorCreate
+from HMS.permissions import (IsDoctorCreate, IsDoctorSelf,
+                             IsDoctorViewPermission)
 
 
 class DoctorCreateView(APIView):

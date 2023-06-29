@@ -10,7 +10,7 @@ developed for a particular module and for code coverage
 from django.db.models.query import QuerySet
 from django.test import TestCase
 
-from HMS.domain.patient.models import PatientFactory, Patient
+from HMS.domain.patient.models import Patient, PatientFactory
 from HMS.domain.patient.services import PatientServices
 from HMS.domain.user.models import UserFactory
 from HMS.domain.user.services import UserServices

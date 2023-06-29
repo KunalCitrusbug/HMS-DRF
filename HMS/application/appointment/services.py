@@ -2,20 +2,17 @@
 This Following file will contain App level services functions that call domain layer
 for instance and send back response to the Interface layer.
 """
+
 import json
-from typing import Dict, Any, List
+from typing import Any, Dict
 
 from django.db import transaction
 from django.db.models import QuerySet
 
 from HMS.application.doctor.services import DoctorAppServices
 from HMS.application.patient.services import PatientAppServices
-from HMS.application.user.services import UserAppServices
 from HMS.domain.appointment.models import Appointment
 from HMS.domain.appointment.services import AppointmentServices
-from HMS.domain.doctor.models import Doctor
-from HMS.domain.doctor.services import DoctorServices
-from HMS.domain.user.models import User
 from HMS.interface.utils.exceptions import DoctorNotAvaliableException
 
 
@@ -30,12 +27,15 @@ class AppointmentAppService:
     def __init__(self):
         self.appointment_service = AppointmentServices()
 
-    def create_appointment(self, data: Dict[str, Any]):
+    def create_appointment(self, data: Dict[str, Any]) -> Appointment:
+        """
+        Create a new appointment.
+        """
         try:
             with transaction.atomic():
-                # Get patient object
+                # Get a patient object
                 patient_obj = PatientAppServices().patient_details(patient_id=data.get('patient'))
-                # Get doctor object
+                # Get a doctor object
                 doctor_obj = DoctorAppServices().doctor_details(doctor_id=data.get('doctor'))
                 date = data.get('date')
                 time = data.get('time')
@@ -55,13 +55,19 @@ class AppointmentAppService:
             raise Exception(f'Error creating appointment: {str(e)}')
 
     def fetch_all_appointments(self):
+        """
+        Fetch all appointments.
+        """
         try:
             appointments = self.appointment_service.get_appointment_repo().all()
             return appointments
         except Exception as e:
             raise Exception("Error while fetching appointments:", e)
 
-    def fetch_appointment(self, params):
+    def fetch_appointment(self, params: QuerySet) -> QuerySet:
+        """
+        Fetch appointments based on query parameters.
+        """
         try:
             queryset = self.appointment_service.get_appointment_repo().all()
             patient_id = params.get('patient_id')
@@ -79,11 +85,11 @@ class AppointmentAppService:
                 queryset = queryset.filter(doctor=doctor_obj)
 
             is_completed = params.get('is_completed')
-            if is_completed is not None:
+            if is_completed:
                 queryset = queryset.filter(is_completed=is_completed)
 
             date = params.get('date')
-            if date is not None:
+            if date:
                 queryset = queryset.filter(date=date)
 
             return queryset
@@ -96,9 +102,9 @@ class AppointmentAppService:
 
 
 def is_doctor_available(doctor, date, time):
-    # Implement the logic to check doctor's availability based on the given doctor_id, date, and time
-    # You can check the doctor's schedule or any other criteria to determine availability
-    # Return True if the doctor is available, False otherwise
+    """
+    Check if the doctor is available at the specified date and time.
+    """
 
     appointment = AppointmentServices().get_appointment_repo().filter(doctor=doctor, date=date, time=time)
     return not appointment.exists()

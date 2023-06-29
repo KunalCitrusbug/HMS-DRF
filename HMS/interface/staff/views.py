@@ -10,10 +10,11 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from HMS.application.staff.services import StaffAppServices
-from HMS.interface.staff.serializers import StaffSerializer, StaffListSerializer
+from HMS.interface.staff.serializers import (StaffListSerializer,
+                                             StaffSerializer)
 from HMS.interface.user.serializers import UserSerializer
 from HMS.interface.utils.api_response import APIResponse
-from HMS.permissions import IsStaffViewPermission, IsStaffSelf, IsStaffCreate
+from HMS.permissions import IsStaffCreate, IsStaffSelf, IsStaffViewPermission
 
 
 class StaffCreateView(APIView):

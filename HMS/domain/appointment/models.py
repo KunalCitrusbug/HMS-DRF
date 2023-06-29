@@ -5,8 +5,8 @@ including the field types and possibly related information
 
 import uuid
 from dataclasses import dataclass
-
 from datetime import datetime
+
 from django.db import models
 
 from HMS.domain.activity.models import Activity

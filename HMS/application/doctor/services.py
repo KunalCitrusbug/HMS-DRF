@@ -3,7 +3,7 @@ This Following file will contain App level services functions that call domain l
 for instance and send back response to the Interface layer.
 """
 import json
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 from django.db.models import QuerySet
 

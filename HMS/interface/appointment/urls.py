@@ -6,8 +6,10 @@ and generate the HTTP response.
 
 from django.urls import path
 
-from HMS.interface.appointment.views import CreateAppointmentView, FetchAppointmentListView, UpdateAppointmentView, \
-    AppointmentDeleteView
+from HMS.interface.appointment.views import (AppointmentDeleteView,
+                                             CreateAppointmentView,
+                                             FetchAppointmentListView,
+                                             UpdateAppointmentView)
 
 urlpatterns = [
     path('create/', CreateAppointmentView.as_view(), name="appointment-create"),

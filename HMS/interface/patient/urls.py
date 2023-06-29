@@ -6,7 +6,8 @@ and generate the HTTP response.
 
 from django.urls import path
 
-from HMS.interface.patient.views import PatientCreateView, PatientListView, PatientDetailView
+from HMS.interface.patient.views import (PatientCreateView, PatientDetailView,
+                                         PatientListView)
 
 urlpatterns = [
     path('register/', PatientCreateView.as_view(), name="patient-register"),

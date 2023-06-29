@@ -8,7 +8,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
 
-from HMS.interface.user.views import RegisterView, CustomTokenObtainPairView
+from HMS.interface.user.views import CustomTokenObtainPairView, RegisterView
 
 urlpatterns = [
     path('signup/', RegisterView.as_view(), name="sign_up"),

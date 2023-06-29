@@ -2,7 +2,7 @@
 This Following file will contain App level services functions that call domain layer
 for instance and send back response to the Interface layer.
 """
-from typing import Dict, Any
+from typing import Any, Dict
 
 from HMS.domain.user.models import User
 from HMS.domain.user.services import UserServices
